@@ -86,3 +86,30 @@ def get_main_menu():
     markup.add(btn_stats, btn_chart)
     markup.add(btn_categories, btn_clear)
     return markup
+
+def parse_multiple_expenses(text):
+    lines = text.split("\n")
+    parsed_expenses = []
+    for line in lines:
+        line = line.strip()
+        if line == "":
+            continue
+        parts = line.split()
+        if len(parts) < 2:
+            continue
+        try:
+            amount = int(parts[0])
+            category = normalize_category(parts[1])
+            description = (
+                " ".join(parts[2:])
+                if len(parts) > 2
+                else "No description")
+            expense = {
+                "amount": amount,
+                "category": category,
+                "description": description,
+                "month": get_current_month()}
+            parsed_expenses.append(expense)
+        except:
+            continue
+    return parsed_expenses
