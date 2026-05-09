@@ -69,3 +69,20 @@ def normalize_category(category):
     category = category.lower().strip()
     return CATEGORIES.get(category,"Other")
 
+def get_main_menu():
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    btn_stats = types.InlineKeyboardButton(
+        "📊 Statistics",
+        callback_data="stats")
+    btn_chart = types.InlineKeyboardButton(
+        "📈 Chart",
+        callback_data="chart")
+    btn_categories = types.InlineKeyboardButton(
+        "📂 Categories",
+        callback_data="categories")
+    btn_clear = types.InlineKeyboardButton(
+        "🗑 Clear",
+        callback_data="clear")
+    markup.add(btn_stats, btn_chart)
+    markup.add(btn_categories, btn_clear)
+    return markup
