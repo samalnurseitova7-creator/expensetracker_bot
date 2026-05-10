@@ -84,4 +84,4 @@ Belgibayeva Ayana
 
 ## Notes:
 
-The project is designed to run in Google Collab, so no local environment setup is required.
+The project is designed to run in Google Collab, so no local environment setup is required
