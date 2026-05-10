@@ -477,6 +477,34 @@ def clear_message(message):
         message.chat.id,
         "✅ All expenses cleared.")
 
+@bot.callback_query_handler(func=lambda call: True)
+def callback_listener(call):
+    chat_id = call.message.chat.id
+    if call.data == "stats":
+        analysis = generate_smart_analysis(chat_id)
+        bot.send_message(chat_id, analysis)
+    elif call.data == "chart":
+        chart_file = create_chart(chat_id)
+        if chart_file is None:
+            bot.send_message(
+                chat_id,
+                "❌ No expenses yet.")
+        else:
+            analysis = generate_smart_analysis(chat_id)
+            bot.send_message(chat_id, analysis)
+            with open(chart_file, "rb") as photo:
+                bot.send_photo(chat_id, photo)
+    elif call.data == "categories":
+        bot.send_message(
+            chat_id,
+            get_categories_text())
+    elif call.data == "clear":
+        user_expenses[chat_id] = []
+        bot.send_message(
+            chat_id,
+            "✅ All data cleared.")
+
+    bot.answer_callback_query(call.id)
 
 
 
