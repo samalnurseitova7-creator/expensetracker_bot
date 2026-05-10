@@ -59,3 +59,17 @@ or
 10000 transport bus
 
 25000 entertainment
+
+## Example Usage:
+
+Create savings goal:
+
+/setgoal Laptop 500000
+
+Add savings:
+
+/savings 30000
+
+Check progress:
+
+/progress
