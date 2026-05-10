@@ -21,3 +21,25 @@ The group project is "Expense Tracker" telegram bot - a personal finance assista
 3. matplotlib
 4. google collab
 5. telegram bot api
+
+## How to run the project:
+
+1\) open the provided ipynb file in Google Collab.
+
+2\) run all cells by clicking "run all" button
+
+3\) after running all cells, the bot will start and in the end you should see: "Bot is running..."
+
+4\) open "expense tracker" bot in telegram application and start chatting with "/start" command.&#x20;
+
+## Available Commands:
+
+- /start
+- /help
+- /stats
+- /chart
+- /clear
+- /setgoal
+- /savings
+- /progress
+- /financialadvice
