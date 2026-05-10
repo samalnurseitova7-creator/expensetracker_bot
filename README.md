@@ -13,3 +13,11 @@ The group project is "Expense Tracker" telegram bot - a personal finance assista
 -create savings goals and track progress;
 
 -receive financial advices
+
+## Technologies used:
+
+1. Python
+2. pyTelegramBotAPI
+3. matplotlib
+4. google collab
+5. telegram bot api
