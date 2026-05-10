@@ -454,6 +454,31 @@ def savings_handler(message):
             message.chat.id,
             "Use:\n/savings 10000")
 
+@bot.message_handler(commands=["progress"])
+def progress_handler(message):
+    progress = get_savings_progress(
+        message.chat.id)
+    bot.send_message(
+        message.chat.id,
+        progress)
+
+@bot.message_handler(commands=["financialadvice"])
+def financial_advice_handler(message):
+    advice = generate_financial_advice(
+        message.chat.id)
+    bot.send_message(
+        message.chat.id,
+        advice)
+
+@bot.message_handler(commands=["clear"])
+def clear_message(message):
+    user_expenses[message.chat.id] = []
+    bot.send_message(
+        message.chat.id,
+        "✅ All expenses cleared.")
+
+
+
 
         
 
