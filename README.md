@@ -77,7 +77,9 @@ Check progress:
 ## Authors:
 
 Zhandarbek Raushan
+
 Nurseitova Samal
+
 Belgibayeva Ayana
 
 ## Notes:
