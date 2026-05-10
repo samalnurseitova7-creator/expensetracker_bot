@@ -506,13 +506,41 @@ def callback_listener(call):
 
     bot.answer_callback_query(call.id)
 
+@bot.message_handler(
+    content_types=["text"],
+    func=lambda message: not message.text.startswith("/"))
+def handle_expenses(message):
+    if message.text.startswith("/"):
+        return
+    chat_id = message.chat.id
+    text = message.text.strip()
+    expenses = parse_multiple_expenses(text)
+    if len(expenses) == 0:
+        bot.send_message(
+            chat_id,
+            """
+❌ Invalid format.
 
+Example:
 
-        
+5000 food lunch
+3000 taxi home
+7000 movie cinema
+""")
 
+        return
+    add_expenses(chat_id, expenses)
+    total_added = sum(
+        expense["amount"]
+        for expense in expenses)
+    reply = (
+        f"✅ Added {len(expenses)} expenses\n\n"
+        f"💰 Total added: {total_added} KZT")
+    bot.send_message(
+        chat_id,
+        reply,
+        reply_markup=get_main_menu())
 
-
-
-    
-        
-
+if __name__ == "__main__":
+    print("Bot is running...")
+    bot.polling(none_stop=True)
