@@ -378,7 +378,29 @@ def help_message(message):
     bot.send_message(
         message.chat.id,
         get_categories_text())
-    
+
+@bot.message_handler(commands=["stats"])
+def stats_message(message):
+
+    analysis = generate_smart_analysis(
+        message.chat.id)
+    bot.send_message(
+        message.chat.id,
+        analysis)
+
+@bot.message_handler(commands=["chart"])
+def chart_message(message):
+    chat_id = message.chat.id
+    chart_file = create_chart(chat_id)
+    if chart_file is None:
+        bot.send_message(
+            chat_id,
+            "❌ No expenses yet.")
+        return
+    analysis = generate_smart_analysis(chat_id)
+    bot.send_message(chat_id, analysis)
+    with open(chart_file, "rb") as photo:
+        bot.send_photo(chat_id, photo)
 
 
     
