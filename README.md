@@ -43,3 +43,19 @@ The group project is "Expense Tracker" telegram bot - a personal finance assista
 - /savings
 - /progress
 - /financialadvice
+
+## Expense Input Format:
+
+\- You can write expenses by one:
+
+20000 food
+
+or
+
+\- You can write multiple expenses at once:
+
+20000 food
+
+10000 transport bus
+
+25000 entertainment
