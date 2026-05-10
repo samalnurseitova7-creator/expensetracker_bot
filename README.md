@@ -73,3 +73,13 @@ Add savings:
 Check progress:
 
 /progress
+
+## Authors:
+
+Zhandarbek Raushan
+Nurseitova Samal
+Belgibayeva Ayana
+
+## Notes:
+
+The project is designed to run in Google Collab, so no local environment setup is required.
