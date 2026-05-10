@@ -136,6 +136,53 @@ def calculate_statistics(chat_id):
         category_totals[category] += amount
     return total, category_totals
 
+def generate_smart_analysis(chat_id):
+    result = calculate_statistics(chat_id)
+    if result is None:
+        return "❌ No expenses yet."
+    total, category_totals = result
+    sorted_categories = sorted(
+        category_totals.items(),
+        key=lambda x: x[1],
+        reverse=True)
+    top_category = sorted_categories[0][0]
+    top_amount = sorted_categories[0][1]
+    analysis = f"""
+📊 EXPENSE ANALYSIS
+
+💰 Total spent:
+{total} KZT
+
+🏆 Biggest category:
+{top_category} — {top_amount} KZT
+
+📂 Category breakdown:
+"""
+    for category, amount in sorted_categories:
+        percent = (amount / total) * 100
+        analysis += (
+            f"\n• {category}: "
+            f"{amount} KZT "
+            f"({percent:.1f}%)")
+    analysis += "\n\n🧠 Financial Insights:\n"
+    if top_amount > total * 0.5:
+        analysis += (
+            f"• More than half of your expenses go to {top_category}.\n")
+
+    if "Food" in category_totals:
+        if category_totals["Food"] > 30000:
+            analysis += (
+                "• Food spending is relatively high.\n")
+
+    if "Entertainment" in category_totals:
+        if category_totals["Entertainment"] > 20000:
+            analysis += (
+                "• Entertainment expenses are above average.\n")
+
+    if total > 100000:
+        analysis += (
+            "• Your overall spending is very high this month.\n")
+    return analysis
 
 
     
