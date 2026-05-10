@@ -184,7 +184,87 @@ def generate_smart_analysis(chat_id):
             "• Your overall spending is very high this month.\n")
     return analysis
 
+def generate_financial_advice(chat_id):
+    result = calculate_statistics(chat_id)
+    if result is None:
+        return "❌ Add some expenses first."
+    total, category_totals = result
+    advice = "💡 PERSONAL FINANCIAL ADVICE\n\n"
+    sorted_categories = sorted(
+        category_totals.items(),
+        key=lambda x: x[1],
+        reverse=True)
 
+    top_category = sorted_categories[0][0]
+    top_amount = sorted_categories[0][1]
+
+    advice += (
+        f"1️⃣ Your biggest spending category is {top_category} "
+        f"with {top_amount} KZT spent. "
+        f"Try setting a monthly limit for this category.\n\n")
+
+    if "Food" in category_totals:
+
+        advice += (
+            "2️⃣ Food expenses can often be reduced by meal planning "
+            "and avoiding daily coffee or delivery purchases.\n\n")
+
+    if "Entertainment" in category_totals:
+
+        advice += (
+            "3️⃣ Entertainment spending should ideally stay below "
+            "15-20% of your total budget.\n\n")
+
+    if "Shopping" in category_totals:
+
+        advice += (
+            "4️⃣ Shopping expenses may include impulsive purchases. "
+            "Try waiting 24 hours before buying non-essential items.\n\n")
+
+    if chat_id in user_savings:
+        savings = user_savings[chat_id]
+        advice += (
+            f"5️⃣ You are currently saving for: "
+            f"{savings['goal']}. "
+            "Consistent weekly savings will help you reach your goal faster.\n\n")
+    else:
+        advice += (
+            "5️⃣ You currently do not have a savings goal. "
+            "Setting one can improve financial discipline.\n\n")
+
+    advice += (
+        "6️⃣ A good financial strategy is:\n"
+        "• 50% needs\n"
+        "• 30% wants\n"
+        "• 20% savings\n\n"
+        "Track your expenses weekly to avoid overspending.")
+
+    return advice
+
+def create_chart(chat_id):
+    result = calculate_statistics(chat_id)
+    if result is None:
+        return None
+    total, category_totals = result
+    labels = list(category_totals.keys())
+    amounts = list(category_totals.values())
+    plt.figure(figsize=(9, 9))
+    colors = plt.cm.Set3(range(len(labels)))
+    plt.pie(
+        amounts,
+        labels=labels,
+        autopct='%1.1f%%',
+        startangle=90,
+        colors=colors)
+    plt.title(
+        "Expense Distribution",
+        fontsize=16,
+        fontweight='bold')
+    plt.axis('equal')
+    filename = f"chart_{chat_id}.png"
+    plt.savefig(filename)
+    plt.close()
+    return filename
     
         
 
