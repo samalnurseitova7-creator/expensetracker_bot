@@ -1,2 +1,9 @@
 # expensetracker_bot
-Expense Tracker is a simple and practical Telegram bot that helps users track spending, manage money, build, better financial habits, and save toward real goals inside an app they already use every day
+The group project is "Expense Tracker" telegram bot - a personal finance assistant built with Python and Telegram bot api
+
+The bot help users with:
+-track and store expenses;
+-view expense statistics;
+-visualize expenditure charts;
+-create savings goals and track progress;
+-receive financial advices
