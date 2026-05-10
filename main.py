@@ -346,7 +346,38 @@ def get_categories_text():
 
 /financialadvice
 """
-        
+
+@bot.message_handler(commands=["start"])
+def start_message(message):
+    text = """
+👋 Welcome to Expense Tracker Bot
+
+I can:
+✅ save expenses
+✅ analyze spending
+✅ build charts
+✅ create savings goals
+✅ give financial advice
+
+Send expenses like:
+
+5000 food lunch
+3000 taxi home
+
+OR MANY expenses at once
+
+"""
+
+    bot.send_message(
+        message.chat.id,
+        text,
+        reply_markup=get_main_menu())
+
+@bot.message_handler(commands=["help"])
+def help_message(message):
+    bot.send_message(
+        message.chat.id,
+        get_categories_text())
     
 
 
