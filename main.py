@@ -113,3 +113,31 @@ def parse_multiple_expenses(text):
         except:
             continue
     return parsed_expenses
+
+def add_expenses(chat_id, expenses):
+    if chat_id not in user_expenses:
+        user_expenses[chat_id] = []
+    user_expenses[chat_id].extend(expenses)
+
+def calculate_statistics(chat_id):
+    if(
+        chat_id not in user_expenses
+        or len(user_expenses[chat_id]) == 0):
+        return None
+    expenses = user_expenses[chat_id]
+    total = 0
+    category_totals = {}
+    for expense in expenses:
+        amount = expense["amount"]
+        category = expense["category"]
+        total += amount
+        if category not in category_totals:
+            category_totals[category] = 0
+        category_totals[category] += amount
+    return total, category_totals
+
+
+
+    
+        
+
