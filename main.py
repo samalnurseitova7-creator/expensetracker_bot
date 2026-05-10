@@ -62,6 +62,7 @@ CATEGORIES = {
     "other": "Other",
     "другое": "Other"}
 
+# helpers
 def get_current_month():
     return datetime.now().strftime("%B")
 
@@ -69,6 +70,7 @@ def normalize_category(category):
     category = category.lower().strip()
     return CATEGORIES.get(category,"Other")
 
+# menu
 def get_main_menu():
     markup = types.InlineKeyboardMarkup(row_width=2)
     btn_stats = types.InlineKeyboardButton(
@@ -87,6 +89,7 @@ def get_main_menu():
     markup.add(btn_categories, btn_clear)
     return markup
 
+# parse multuple expenses
 def parse_multiple_expenses(text):
     lines = text.split("\n")
     parsed_expenses = []
@@ -114,11 +117,13 @@ def parse_multiple_expenses(text):
             continue
     return parsed_expenses
 
+# add expenses
 def add_expenses(chat_id, expenses):
     if chat_id not in user_expenses:
         user_expenses[chat_id] = []
     user_expenses[chat_id].extend(expenses)
 
+# calculate statistics
 def calculate_statistics(chat_id):
     if(
         chat_id not in user_expenses
@@ -136,6 +141,7 @@ def calculate_statistics(chat_id):
         category_totals[category] += amount
     return total, category_totals
 
+# smart analysis
 def generate_smart_analysis(chat_id):
     result = calculate_statistics(chat_id)
     if result is None:
@@ -184,6 +190,7 @@ def generate_smart_analysis(chat_id):
             "• Your overall spending is very high this month.\n")
     return analysis
 
+# financial advice
 def generate_financial_advice(chat_id):
     result = calculate_statistics(chat_id)
     if result is None:
@@ -241,6 +248,7 @@ def generate_financial_advice(chat_id):
 
     return advice
 
+# create chart
 def create_chart(chat_id):
     result = calculate_statistics(chat_id)
     if result is None:
@@ -266,6 +274,7 @@ def create_chart(chat_id):
     plt.close()
     return filename
 
+# saving functions
 def create_saving_goal(chat_id, goal, target):
     user_savings[chat_id] = {
         "goal": goal,
@@ -316,6 +325,7 @@ Goal:
         text += "\n🏆 Congratulations! Goal achieved!"
     return text
 
+# help text
 def get_categories_text():
     return """
 📂 Available categories:
@@ -346,7 +356,7 @@ def get_categories_text():
 
 /financialadvice
 """
-
+# start
 @bot.message_handler(commands=["start"])
 def start_message(message):
     text = """
@@ -373,12 +383,14 @@ OR MANY expenses at once
         text,
         reply_markup=get_main_menu())
 
+# help
 @bot.message_handler(commands=["help"])
 def help_message(message):
     bot.send_message(
         message.chat.id,
         get_categories_text())
 
+# stats
 @bot.message_handler(commands=["stats"])
 def stats_message(message):
 
@@ -388,6 +400,7 @@ def stats_message(message):
         message.chat.id,
         analysis)
 
+# chart
 @bot.message_handler(commands=["chart"])
 def chart_message(message):
     chat_id = message.chat.id
@@ -402,6 +415,7 @@ def chart_message(message):
     with open(chart_file, "rb") as photo:
         bot.send_photo(chat_id, photo)
 
+# savings goal
 @bot.message_handler(commands=["setgoal"])
 def set_goal(message):
     try:
@@ -430,7 +444,7 @@ def set_goal(message):
              message.chat.id,
              "Use:\n/setgoal MacBook 500000")
 
-
+# add savings
 @bot.message_handler(commands=["savings"])
 def savings_handler(message):
     try:
@@ -454,6 +468,7 @@ def savings_handler(message):
             message.chat.id,
             "Use:\n/savings 10000")
 
+# progress
 @bot.message_handler(commands=["progress"])
 def progress_handler(message):
     progress = get_savings_progress(
@@ -462,6 +477,7 @@ def progress_handler(message):
         message.chat.id,
         progress)
 
+# financial advice
 @bot.message_handler(commands=["financialadvice"])
 def financial_advice_handler(message):
     advice = generate_financial_advice(
@@ -470,6 +486,7 @@ def financial_advice_handler(message):
         message.chat.id,
         advice)
 
+# clear
 @bot.message_handler(commands=["clear"])
 def clear_message(message):
     user_expenses[message.chat.id] = []
@@ -477,6 +494,7 @@ def clear_message(message):
         message.chat.id,
         "✅ All expenses cleared.")
 
+# buttons
 @bot.callback_query_handler(func=lambda call: True)
 def callback_listener(call):
     chat_id = call.message.chat.id
@@ -506,6 +524,7 @@ def callback_listener(call):
 
     bot.answer_callback_query(call.id)
 
+# handle user input
 @bot.message_handler(
     content_types=["text"],
     func=lambda message: not message.text.startswith("/"))
@@ -541,6 +560,7 @@ Example:
         reply,
         reply_markup=get_main_menu())
 
+# run bot
 if __name__ == "__main__":
     print("Bot is running...")
     bot.polling(none_stop=True)
