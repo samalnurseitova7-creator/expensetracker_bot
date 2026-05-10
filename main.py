@@ -402,6 +402,63 @@ def chart_message(message):
     with open(chart_file, "rb") as photo:
         bot.send_photo(chat_id, photo)
 
+@bot.message_handler(commands=["setgoal"])
+def set_goal(message):
+    try:
+        text = message.text.replace("/setgoal"," ").strip()
+        parts = text.split()
+        target = int(parts[-1])
+        goal = " ".join(parts[:-1])
+        create_saving_goal(
+            message.chat.id,
+            goal,
+            target)
+
+        bot.send_message(
+            message.chat.id,
+            f"""
+✅ Savings goal created!
+
+🎯 Goal:
+{goal}
+
+💰 Target:
+{target} KZT
+""")
+     except:
+         bot.send_message(
+             message.chat.id,
+             "Use:\n/setgoal MacBook 500000")
+
+
+@bot.message_handler(commands=["savings"])
+def savings_handler(message):
+    try:
+        amount = int(
+            message.text.replace("/savings"," ").strip())
+        success = add_to_savings(
+            message.chat.id,
+            amount)
+        if not success:
+            bot.send_message(
+                message.chat.id,
+                "❌ Create a savings goal first using /setgoal")
+            return
+        progress = get_savings_progress(
+            message.chat.id)
+        bot.send_message(
+            message.chat.id,
+            f"✅ Added {amount} KZT to savings\n\n{progress}")
+    except:
+        bot.send_message(
+            message.chat.id,
+            "Use:\n/savings 10000")
+
+
+        
+
+
+
 
     
         
