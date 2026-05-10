@@ -265,6 +265,91 @@ def create_chart(chat_id):
     plt.savefig(filename)
     plt.close()
     return filename
+
+def create_saving_goal(chat_id, goal, target):
+    user_savings[chat_id] = {
+        "goal": goal,
+        "target": target,
+        "saved": 0}
+    
+def add_to_savings(chat_id, amount):
+    if chat_id not in user_savings:
+        return False
+    user_savings[chat_id]["saved"] += amount
+    return True
+
+def get_savings_progress(chat_id):
+    if chat_id not in user_savings:
+        return "❌ You do not have a savings goal yet."
+    data = user_savings[chat_id]
+    goal = data["goal"]
+    target = data["target"]
+    saved = data["saved"]
+    percent = (saved / target) * 100
+    remaining = target - saved
+    if remaining < 0:
+        remaining = 0
+    progress_blocks = int(percent // 10)
+    progress_bar = "🟩" * progress_blocks
+    progress_bar += "⬜" * (10 - progress_blocks)
+    text = f"""
+🎯 SAVINGS GOAL
+
+Goal:
+{goal}
+
+💰 Saved:
+{saved} KZT
+
+🎯 Target:
+{target} KZT
+
+📈 Progress:
+{percent:.1f}%
+
+{progress_bar}
+
+💸 Remaining:
+{remaining} KZT
+"""
+    if saved >= target:
+        text += "\n🏆 Congratulations! Goal achieved!"
+    return text
+
+def get_categories_text():
+    return """
+📂 Available categories:
+
+🍔 food / еда / coffee
+🚌 transport / taxi
+🎮 entertainment / movie
+🏀 sport / gym
+📚 education / books
+👕 clothes / shoes
+💊 health / medicine
+🛒 shopping
+💡 bills
+
+✅ Multiple expenses:
+
+5000 food lunch
+3000 taxi home
+7000 movie cinema
+
+🎯 Savings commands:
+
+/setgoal MacBook 500000
+/savings 20000
+/progress
+
+💡 Financial advice:
+
+/financialadvice
+"""
+        
+    
+
+
     
         
 
